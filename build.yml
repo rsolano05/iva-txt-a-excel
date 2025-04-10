@@ -1,0 +1,27 @@
+name: Build EXE
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+
+    - name: Install dependencies
+      run: pip install pyinstaller pandas openpyxl xlsxwriter
+
+    - name: Build EXE
+      run: pyinstaller --onefile --noconsole procesador_iva.py
+
+    - name: Upload EXE
+      uses: actions/upload-artifact@v3
+      with:
+        name: iva_exe
+        path: dist/procesador_iva.exe
